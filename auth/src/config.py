@@ -1,10 +1,11 @@
-from os import environ as env
+from os import getenv
+from dotenv import load_dotenv
 
 from pydantic import BaseModel, Field
 
 
 class PostgresConfig(BaseModel):
-    url: str = Field(alias="DB_URL")
+    url: str = getenv("DB_URL")
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50
@@ -12,4 +13,4 @@ class PostgresConfig(BaseModel):
 
 
 class Config(BaseModel):
-    postgres: PostgresConfig = Field(default_factory=lambda: PostgresConfig(**env))
+    postgres: PostgresConfig = Field(default_factory=lambda: PostgresConfig())
