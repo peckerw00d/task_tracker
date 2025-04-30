@@ -1,5 +1,4 @@
 from os import getenv
-from dotenv import load_dotenv
 
 from pydantic import BaseModel, Field
 

@@ -3,11 +3,12 @@ from dishka import Provider, Scope, from_context, provide
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from src.db.repository import RepositoryInterface, UserRepository
 from src.db.database import new_session_maker
 from src.config import Config
 
 
-class AppProvider(Provider):
+class DBProvider(Provider):
     config = from_context(provides=Config, scope=Scope.APP)
 
     @provide(scope=Scope.APP)
@@ -22,3 +23,9 @@ class AppProvider(Provider):
     ) -> AsyncIterable[AsyncSession]:
         async with session_maker() as session:
             yield session
+
+
+class RepositoryProvider(Provider):
+    @provide(scope=Scope.REQUEST)
+    async def get_user_repo(self, session: AsyncSession) -> RepositoryInterface:
+        return UserRepository(session=session)
