@@ -9,7 +9,7 @@ from src.db.models.users import User
 
 class RepositoryInterface(Protocol):
     @abstractmethod
-    async def add(self, entity):
+    async def create(self, entity):
         raise NotImplementedError
 
     @abstractmethod
@@ -21,14 +21,12 @@ class UserRepository:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def add(self, user: User) -> Optional[User]:
+    async def create(self, user: User) -> Optional[User]:
         self.session.add(user)
         await self.session.flush()
         return user
 
     async def get(self, user_id: str) -> Optional[User]:
         stmt = Select(User).where(User.id == user_id)
-        result: Result = self.session.execute(stmt)
+        result: Result = await self.session.execute(stmt)
         return result.scalars().first()
-
-    

@@ -24,7 +24,7 @@ class DBProvider(Provider):
         async with session_maker() as session:
             yield session
 
-
+    
 class RepositoryProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_user_repo(self, session: AsyncSession) -> RepositoryInterface:
