@@ -3,9 +3,10 @@ from dishka import Provider, Scope, from_context, provide
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from src.services.security import TokenService
 from src.db.repository import RepositoryInterface, UserRepository
 from src.db.database import new_session_maker
-from src.config import Config
+from src.config import Config, SecurityConfig
 
 
 class DBProvider(Provider):
@@ -24,8 +25,18 @@ class DBProvider(Provider):
         async with session_maker() as session:
             yield session
 
-    
+
 class RepositoryProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_user_repo(self, session: AsyncSession) -> RepositoryInterface:
         return UserRepository(session=session)
+
+
+class SecurityProvider(Provider):
+    @provide(scope=Scope.APP)
+    async def get_security_config(self) -> SecurityConfig:
+        return SecurityConfig()
+
+    @provide(scope=Scope.APP)
+    async def get_token_service(self, security_config: SecurityConfig) -> TokenService:
+        return TokenService(security_config=security_config)
