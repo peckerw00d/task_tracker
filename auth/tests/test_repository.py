@@ -2,7 +2,6 @@ import pytest
 from sqlalchemy import select
 
 from src.db.models import User
-from src.db.repository import UserRepository
 
 
 @pytest.mark.asyncio
