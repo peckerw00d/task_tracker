@@ -3,6 +3,11 @@ from os import getenv
 from pydantic import BaseModel, Field
 
 
+class SecurityConfig(BaseModel):
+    algorithm: str = getenv("ALGORITHM")
+    secret_key: str = getenv("SECRET_KEY")
+
+
 class PostgresConfig(BaseModel):
     url: str = getenv("DB_URL")
     echo: bool = False
@@ -13,3 +18,4 @@ class PostgresConfig(BaseModel):
 
 class Config(BaseModel):
     postgres: PostgresConfig = Field(default_factory=lambda: PostgresConfig())
+    security: SecurityConfig = Field(default_factory=lambda: SecurityConfig())
