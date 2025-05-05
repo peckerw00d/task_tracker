@@ -1,4 +1,5 @@
-from auth.src.services.auth.password import get_password_hash
+from src.services.auth.exceptions import UserAlreadyExists
+from src.services.auth.password import get_password_hash
 from src.db.models.users import User
 from src.db.repository import RepositoryInterface
 from src.services.auth.dto import UserCreateDTO, UserResponseDTO
@@ -9,6 +10,9 @@ class UserService:
         self.repo = repo
 
     async def create_user(self, data: UserCreateDTO) -> UserResponseDTO:
+        if self.repo.get_by_username(username=data.username):
+            raise UserAlreadyExists
+
         password_hash = get_password_hash(data.password)
 
         user = User(
