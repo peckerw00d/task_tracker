@@ -26,6 +26,11 @@ class UserRepository:
         await self.session.flush()
         return user
 
+    async def get_by_username(self, username: str):
+        stmt = Select(User).where(User.username == username)
+        result: Result = await self.session.execute(stmt)
+        return result.scalars().first()
+
     async def get(self, user_id: str) -> Optional[User]:
         stmt = Select(User).where(User.id == user_id)
         result: Result = await self.session.execute(stmt)
