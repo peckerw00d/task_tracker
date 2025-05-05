@@ -1,3 +1,4 @@
+from auth.src.db.models.users import User
 from auth.src.services.auth.dto import UserCreateDTO
 from src.services.auth.token_service import TokenService
 from src.services.auth.user_service import UserService
@@ -8,5 +9,5 @@ class AuthService:
         self.user_service = user_service
         self.token_service = token_service
 
-    async def registration(self, data: UserCreateDTO):
+    async def registration(self, data: UserCreateDTO) -> None:
         new_user = await self.user_service.create_user(data=data)

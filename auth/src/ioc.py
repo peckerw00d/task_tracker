@@ -3,6 +3,8 @@ from dishka import Provider, Scope, from_context, provide
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from src.services.auth.auth_service import AuthService
+from src.services.auth.user_service import UserService
 from src.services.auth.token_service import TokenService
 from src.db.repository import RepositoryInterface, UserRepository
 from src.db.database import new_session_maker
@@ -40,3 +42,13 @@ class SecurityProvider(Provider):
     @provide(scope=Scope.APP)
     async def get_token_service(self, security_config: SecurityConfig) -> TokenService:
         return TokenService(security_config=security_config)
+
+    @provide(scope=Scope.APP)
+    async def get_user_service(self, repo: RepositoryInterface) -> UserService:
+        return UserService(repo=repo)
+
+    @provide(scope=Scope.APP)
+    async def get_auth_service(
+        self, user_serivce: UserService, token_service: TokenService
+    ):
+        return AuthService(user_service=user_serivce, token_service=token_service)

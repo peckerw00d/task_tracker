@@ -6,7 +6,7 @@ from dishka import make_async_container
 import uvicorn
 
 from src.config import Config
-from src.ioc import DBProvider, RepositoryProvider
+from src.ioc import DBProvider, RepositoryProvider, SecurityProvider
 
 
 load_dotenv()
@@ -14,7 +14,7 @@ load_dotenv()
 
 config = Config()
 container = make_async_container(
-    DBProvider(), RepositoryProvider(), context={Config: config}
+    DBProvider(), RepositoryProvider(), SecurityProvider(), context={Config: config}
 )
 
 app = FastAPI()
