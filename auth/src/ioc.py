@@ -3,7 +3,7 @@ from dishka import Provider, Scope, from_context, provide
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
-from src.services.security import TokenService
+from src.services.auth.token_service import TokenService
 from src.db.repository import RepositoryInterface, UserRepository
 from src.db.database import new_session_maker
 from src.config import Config, SecurityConfig
