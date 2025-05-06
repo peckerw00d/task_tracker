@@ -10,7 +10,7 @@ class UserService:
         self.repo = repo
 
     async def create_user(self, data: UserCreateDTO) -> UserResponseDTO:
-        if self.repo.get_by_username(username=data.username):
+        if await self.repo.get_by_username(username=data.username):
             raise UserAlreadyExists
 
         password_hash = get_password_hash(data.password)

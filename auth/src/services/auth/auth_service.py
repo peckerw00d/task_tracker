@@ -1,5 +1,4 @@
-from auth.src.db.models.users import User
-from auth.src.services.auth.dto import UserCreateDTO
+from src.services.auth.dto import UserCreateDTO
 from src.services.auth.token_service import TokenService
 from src.services.auth.user_service import UserService
 
