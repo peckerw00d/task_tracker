@@ -5,7 +5,7 @@ from src.services.auth.dto import UserCreateDTO
 from src.api.schemas import UserRegistrationSchema
 
 from src.services.auth.auth_service import AuthService
-from src.services.auth.exceptions import UserAlreadyExists
+from src.services.auth.exceptions import UserAlreadyExists, UsernameAlreadyInUse
 
 router = APIRouter(route_class=DishkaRoute)
 
@@ -23,4 +23,9 @@ async def registration(
     except UserAlreadyExists as err:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="User already exists!"
+        )
+
+    except UsernameAlreadyInUse as err:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Username already in use!"
         )

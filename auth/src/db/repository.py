@@ -31,6 +31,11 @@ class UserRepository:
         result: Result = await self.session.execute(stmt)
         return result.scalars().first()
 
+    async def get_by_email(self, email: str):
+        stmt = Select(User).where(User.email == email)
+        result: Result = await self.session.execute(stmt)
+        return result.scalars().first()
+
     async def get(self, user_id: str) -> Optional[User]:
         stmt = Select(User).where(User.id == user_id)
         result: Result = await self.session.execute(stmt)
