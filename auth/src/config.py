@@ -9,7 +9,7 @@ class SecurityConfig(BaseModel):
 
 
 class PostgresConfig(BaseModel):
-    url: str = getenv("DB_URL")
+    url: str = str(getenv("AUTH_DB_URL"))
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50

@@ -18,7 +18,7 @@ class DBProvider(Provider):
     async def get_session_maker(
         self, config: Config
     ) -> async_sessionmaker[AsyncSession]:
-        return new_session_maker(config.postgres)
+        return await new_session_maker(config.postgres)
 
     @provide(scope=Scope.REQUEST)
     async def get_session(
@@ -39,16 +39,16 @@ class SecurityProvider(Provider):
     async def get_security_config(self) -> SecurityConfig:
         return SecurityConfig()
 
-    @provide(scope=Scope.APP)
+    @provide(scope=Scope.REQUEST)
     async def get_token_service(self, security_config: SecurityConfig) -> TokenService:
         return TokenService(security_config=security_config)
 
-    @provide(scope=Scope.APP)
+    @provide(scope=Scope.REQUEST)
     async def get_user_service(self, repo: RepositoryInterface) -> UserService:
         return UserService(repo=repo)
 
-    @provide(scope=Scope.APP)
+    @provide(scope=Scope.REQUEST)
     async def get_auth_service(
-        self, user_serivce: UserService, token_service: TokenService
-    ):
-        return AuthService(user_service=user_serivce, token_service=token_service)
+        self, user_service: UserService, token_service: TokenService
+    ) -> AuthService:
+        return AuthService(user_service=user_service, token_service=token_service)
