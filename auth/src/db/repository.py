@@ -23,7 +23,7 @@ class UserRepository:
 
     async def create(self, user: User) -> Optional[User]:
         self.session.add(user)
-        await self.session.flush()
+        await self.session.commit()
         return user
 
     async def get_by_username(self, username: str):
