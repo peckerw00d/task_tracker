@@ -10,7 +10,7 @@ class TokenService:
 
     async def create_access_token(self, data: dict) -> str:
         to_encode = data.copy()
-        expire = datetime(timezone.utc) + timedelta(days=30)
+        expire = datetime.now(timezone.utc) + timedelta(days=30)
         to_encode.update({"exp": expire})
         encode_jwt = jwt.encode(
             to_encode,

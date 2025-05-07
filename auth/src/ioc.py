@@ -49,6 +49,11 @@ class SecurityProvider(Provider):
 
     @provide(scope=Scope.REQUEST)
     async def get_auth_service(
-        self, user_service: UserService, token_service: TokenService
+        self,
+        user_service: UserService,
+        token_service: TokenService,
+        repo: RepositoryInterface,
     ) -> AuthService:
-        return AuthService(user_service=user_service, token_service=token_service)
+        return AuthService(
+            user_service=user_service, token_service=token_service, repo=repo
+        )

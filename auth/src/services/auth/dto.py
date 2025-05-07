@@ -13,3 +13,9 @@ class UserResponseDTO:
     id: int
     username: str
     email: str
+
+
+@dataclass
+class UserCredentialsDTO:
+    username: str
+    password: str
