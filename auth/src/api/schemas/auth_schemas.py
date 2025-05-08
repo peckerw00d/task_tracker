@@ -18,3 +18,8 @@ class UserResponseSchema(UserBaseSchema):
 
     class Config:
         model_config = ConfigDict(from_attributes=True)
+
+
+class TokenResponseSchema(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
