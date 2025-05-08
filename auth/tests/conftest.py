@@ -16,12 +16,13 @@ async def mock_async_session():
     session.execute = AsyncMock(
         return_value=MagicMock(
             scalars=MagicMock(
-                return_valute=MagicMock(first=MagicMock(return_value=None))
+                return_value=MagicMock(first=MagicMock(return_value=None))
             )
         )
     )
     session.add = MagicMock()
     session.flush = AsyncMock()
+    session.commit = AsyncMock()
 
     return session
 
