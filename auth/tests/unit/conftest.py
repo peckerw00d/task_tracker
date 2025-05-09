@@ -1,11 +1,13 @@
+from httpx import AsyncClient
 import pytest_asyncio
 from unittest.mock import AsyncMock, MagicMock
 
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 
 from src.services.auth.dto import UserCreateDTO
 from src.services.auth.user_service import UserService
 from src.db.models.users import User
+from src.db.models.base import Base
 from src.db.repository import RepositoryInterface, UserRepository
 
 
@@ -58,3 +60,19 @@ async def mock_user_repository(test_user):
 @pytest_asyncio.fixture(scope="function")
 async def user_service(mock_user_repository):
     return UserService(repo=mock_user_repository)
+
+
+@pytest_asyncio.fixture(scope="session")
+async def client():
+    async with AsyncClient(base_url="http://localhost:8000") as client:
+        yield client
+
+
+@pytest_asyncio.fixture
+async def async_db():
+    engine = create_async_engine(TEST_DB_URL)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield engine
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
